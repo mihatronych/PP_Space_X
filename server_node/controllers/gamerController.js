@@ -1,5 +1,5 @@
 class GamerController{
-    async resgistration(req, res){
+    async registration(req, res){
 
     }
     async login(req, res){
