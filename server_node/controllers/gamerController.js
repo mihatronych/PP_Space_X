@@ -1,3 +1,5 @@
+const ApiError = require('../error/ApiError');
+
 class GamerController{
     async registration(req, res){
 
@@ -5,10 +7,12 @@ class GamerController{
     async login(req, res){
 
     }
-    async check(req, res){
-        const query = res.query
-        res.json(query)
-
+    async check(req, res, next){
+        const {id} = req.query
+        if (!id){
+            next(ApiError)
+        }
+        res.json(id)
     }
 }
 

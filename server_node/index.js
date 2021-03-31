@@ -5,6 +5,9 @@ const models = require('./models/models')
 const PORT = process.env.PORT || 7000
 const cors = require('cors')
 const router = require('./routes/index')
+const errorHandler = require('./middleware/ErrorHandlingMiddleware')
+
+// Обработка ошибок, последний middleware
 
 const app = express()
 app.use(cors())
