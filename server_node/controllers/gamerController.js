@@ -6,7 +6,9 @@ class GamerController{
 
     }
     async check(req, res){
-        res.json('asfasfsf')
+        const query = res.query
+        res.json(query)
+
     }
 }
 

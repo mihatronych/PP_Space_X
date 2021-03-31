@@ -5,7 +5,7 @@ class CountryController{
     async getAll(req, res){
 
     }
-    async check(req, res){
+    async getOne(req, res){
 
     }
 }
