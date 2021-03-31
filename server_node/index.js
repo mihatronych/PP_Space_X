@@ -7,12 +7,14 @@ const cors = require('cors')
 const router = require('./routes/index')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 
-// Обработка ошибок, последний middleware
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 app.use('/api', router)
+
+// Обработка ошибок, последний middleware
+app.use(errorHandler)
 
 const start = async () => {
     try {
