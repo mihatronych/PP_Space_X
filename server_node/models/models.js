@@ -4,8 +4,8 @@ const {DataTypes} = require('sequelize')
 const Gamer = sequalize.define('gamer',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     nickname: {type: DataTypes.STRING, unique: true, },
-    email: {type: DataTypes.STRING, unique: true, },
-    password: {type: DataTypes.STRING}
+    email: {type: DataTypes.STRING, unique: true, allowNull: false },
+    password: {type: DataTypes.STRING, allowNull: false}
 })
 
 const Session = sequalize.define('session',{

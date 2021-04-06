@@ -1,18 +1,96 @@
 const ApiError = require('../error/ApiError');
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+// npm i bcrypt jsonwebtoken
+const {Gamer} = require('../models/models')
+
+const generateJwt = (id, nickname,email, countryId) =>{
+    jwt.sign(
+        {id: id, nickname: nickname, email: email, countryId: countryId},
+        process.env.SECRET_KEY,
+        {expiresIn: '72h'})
+}
 
 class GamerController{
-    async registration(req, res){
-
+    async registration(req, res, next){
+        const {nickname, email, password, countryId} = req.body
+        if(!email || !password || !nickname){
+            return next(ApiError.badRequest('Некорректный nickname, email или password'))
+        }
+        const candidate1 = await Gamer.findOne({where: {email}})
+        if(candidate1){
+            return next(ApiError.badRequest('Пользователь с таким email уже существует'))
+        }
+        const candidate2 = await Gamer.findOne({where: {nickname}})
+        if(candidate2){
+            return next(ApiError.badRequest('Пользователь с таким nickname уже существует'))
+        }
+        const hashPassword = await bcrypt.hash(password, 5)
+        const gamer = await Gamer.create({nickname, email, password: hashPassword, countryId:countryId })
+        const token = generateJwt(gamer.id, nickname, email, gamer.countryId)
+        return res.json({token})
     }
-    async login(req, res){
-
+    async login(req, res, next){
+        const {email, password} = req.body
+        const gamer = await Gamer.findOne({where: {email}})
+        if (!gamer){
+            return next(ApiError.internal('Пользователь не найден'))
+        }
+        let comparePassword = bcrypt.compareSync(password, gamer.password)
+        if(!comparePassword){
+            return next(ApiError.internal('Указан неверный пароль'))
+        }
+        const token = generateJwt(gamer.id, gamer.nickname, gamer.email, gamer.countryId)
+        return res.json({token})
     }
     async check(req, res, next){
-        const {id} = req.query
-        if (!id){
-            return next(ApiError.badRequest('Не задан ID'))
+        const token = generateJwt(req.gamer.id, req.gamer.nickname, req.gamer.email, req.gamer.countryId)
+        return res.json({token})
+    }
+    async getAll(req, res){
+        let {countryId, limit, page} = req.body
+        page = page || 1
+        limit = limit || 9
+        let offset = page * limit - limit
+        let gamers;
+        if (!countryId){
+            gamers = await Gamer.findAndCountAll({limit, offset})
         }
-        res.json(id)
+        if (countryId){
+            gamers = await Gamer.findAndCountAll({where: {countryId}, limit, offset})
+        }
+        return res.json(gamers)
+    }
+    async getOne(req, res){
+        const {id} = req.params
+        const gamer = await Gamer.findOne(
+            {where: {id}},
+        )
+        return res.json(gamer)
+    }
+    async create(req, res){
+        // нужен ли он?
+    }
+    async update(req, res, next){   //Вот в этих функциях я максимально неуверен
+        const {nickname, email, password, countryId} = req.body
+        const id = req.gamer.id
+        const candidate1 = await Gamer.findOne({where: {email}})
+        const candidate2 = await Gamer.findOne({where: {nickname}})
+        if(candidate1 || candidate2){
+            return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
+        }
+        const hashPassword = await bcrypt.hash(password, 5)
+        const gamer = await Gamer.findOne(
+            {where: {id}},
+        ).update({nickname: nickname, email:email, password:hashPassword, countryId:countryId},)
+        return res.json(gamer)
+    }
+    async delete(req, res){    //Вот в этих функциях я максимально неуверен
+        const {id} = req.params
+        const gamer = await Gamer.destroy(
+            {where: {id}},
+        )
+        return res.json(gamer)
     }
 }
 
