@@ -1,0 +1,20 @@
+{
+  "name": "PP_Space_X",
+  "version": "1.0.0",
+  "description": "To je naš projekt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mihatronych/PP_Space_X.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mihatronych/PP_Space_X/issues"
+  },
+  "homepage": "https://github.com/mihatronych/PP_Space_X#readme"
+}

@@ -9,6 +9,9 @@ client_react/*.orig.*
 client_react/web-build/
 
 server_node/.env
+server_node/package-lock.json
+
+
 
 */yarn.lock
 */yarn-error.log
@@ -22,3 +25,4 @@ client_react/.DS_Store
 */.idea/*
 *.xml
 *.iml
+
