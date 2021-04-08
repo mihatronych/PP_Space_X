@@ -1,11 +1,12 @@
+require('dotenv').config()
 const ApiError = require('../error/ApiError');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 // npm i bcrypt jsonwebtoken
 const {Gamer} = require('../models/models')
 
-const generateJwt = (id, nickname,email, countryId) =>{
-    jwt.sign(
+const generateJwt = (id, nickname, email, countryId) =>{
+    return jwt.sign(
         {id: id, nickname: nickname, email: email, countryId: countryId},
         process.env.SECRET_KEY,
         {expiresIn: '72h'})
@@ -44,6 +45,7 @@ class GamerController{
         return res.json({token})
     }
     async check(req, res, next){
+        console.log(req.gamer.nickname);
         const token = generateJwt(req.gamer.id, req.gamer.nickname, req.gamer.email, req.gamer.countryId)
         return res.json({token})
     }
@@ -72,18 +74,38 @@ class GamerController{
         // нужен ли он?
     }
     async update(req, res, next){   //Вот в этих функциях я максимально неуверен
-        const {nickname, email, password, countryId} = req.body
-        const id = req.gamer.id
-        const candidate1 = await Gamer.findOne({where: {email}})
-        const candidate2 = await Gamer.findOne({where: {nickname}})
-        if(candidate1 || candidate2){
-            return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
+        let {nickname, email, password, countryId} = req.body
+        const id = req.gamer.id;
+        const cur_gamer = await Gamer.findOne({where: {id}});
+
+        if(email === undefined){
+            email = cur_gamer.email;
+        }else{
+            const candidate1 = await Gamer.findOne({where: {email}})
+            if(candidate1 ){
+                return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
+            }
         }
-        const hashPassword = await bcrypt.hash(password, 5)
-        const gamer = await Gamer.findOne(
+        if(!nickname){
+            nickname = cur_gamer.nickname;
+        }else{
+            const candidate2 = await Gamer.findOne({where: {nickname}})
+            if( candidate2){
+                return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
+            }
+        }
+        if(!password){
+            password = cur_gamer.password;
+        }
+        const hashPassword = await bcrypt.hash(password, 5);
+        if(!countryId){
+            countryId = cur_gamer.countryId;
+        }
+        const gamer = await (await (Gamer.findOne(
             {where: {id}},
-        ).update({nickname: nickname, email:email, password:hashPassword, countryId:countryId},)
-        return res.json(gamer)
+        ))).update({nickname: nickname, email:email, password:hashPassword, countryId:countryId},)
+        const token = generateJwt(id, nickname, email, countryId)
+        return res.json({token})
     }
     async delete(req, res){    //Вот в этих функциях я максимально неуверен
         const {id} = req.params

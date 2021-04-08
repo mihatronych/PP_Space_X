@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Router = require('express')
 const router = new Router()
 const gamerRouter = require('./gamerRouter')

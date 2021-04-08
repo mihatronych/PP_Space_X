@@ -4,6 +4,8 @@ const ApiError = require('../error/ApiError')
 class CountryController{
     async create(req, res){
         const {name} = req.body
+        console.log(req.body);
+        console.log("Country create");
         const country = await Country.create({name})
         return res.json({country})
     }
