@@ -13,7 +13,6 @@ import {
     PLAYER_STOP,
     PLAYER_SHOOT,
     MOUSE_TRIGGER,
-    KEY_TRIGGER,
     PLAYER_MAX_SPEED,
     BULLET_MAX_SPEED,
     ENEMY_SHOTS_PER_MINUTE,
@@ -237,7 +236,7 @@ Dispatcher.register(function(action) {
             break;
 
         case PLAYER_MOVE:
-            if (action.type == MOUSE_TRIGGER) {
+            if (action.type === MOUSE_TRIGGER) {
                 store.movePlayer(action.dx, action.dy);
             } else {
                 let speed = player_speed();

@@ -37,10 +37,11 @@ class SessionController{
 
     async update(req, res, next){ //Вот в этих функциях я максимально неуверен
         try {
+
             const {id, score, time_session, gamerId} = req.body
-            const session = await Session.findOne(
+            const session = await (await Session.findOne(
                 {where: {id}},
-            ).update({score:score, time_session:time_session, gamerId:gamerId})
+            )).update({score:score, time_session:time_session, gamerId:gamerId})
             return res.json({session})
         }
         catch (e){

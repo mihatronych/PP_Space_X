@@ -1,0 +1,13 @@
+body {
+    background-image: url("../public/img/bg.jpeg");
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    /*background-size: cover;*/
+    background-color: #000333 !important;
+}
+.auth_card{
+    border: 0 solid #000000;
+    background-color: #F0F0F3;
+    width: 420px;
+
+}
