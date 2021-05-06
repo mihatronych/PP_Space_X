@@ -6,6 +6,9 @@ import Actions from "../Actions";
 import Enemies from "./Enemies";
 import Bullets from "./Bullets";
 import Player from "./Player";
+import {Link} from "react-router-dom";
+import {MAIN_ROUTE} from "../utils/consts";
+import {Nav} from "react-bootstrap";
 
 class SpaceInvaders extends Component {
     constructor() {
@@ -99,16 +102,16 @@ class SpaceInvaders extends Component {
                             Start Another Game
                         </button>
                     </p>
-                    <p>Built for #HTML5DevConf 2015 by Swizec</p>
+                    <p>Try again</p>
+                    <Nav.Link className="h3" as={Link} to={MAIN_ROUTE}>Home page</Nav.Link>
                 </div>
             );
         } else {
             return (
                 <div className="text-center">
-                    <h1>Space Invaders</h1>
+                    <h1>Space X</h1>
                     <p className="lead">
-                        Simple space invaders clone built with React and some
-                        d3.js. <br />
+
                         <code>Arrow keys</code> or mouse drag to move,{" "}
                         <code>&lt;space&gt;</code> to shoot.
                     </p>
@@ -120,7 +123,8 @@ class SpaceInvaders extends Component {
                             Start Game
                         </button>
                     </p>
-                    <p>Built for #HTML5DevConf 2015 by Swizec</p>
+                    <p>Good luck LOL</p>
+                    <Nav.Link className="h3" as={Link} to={MAIN_ROUTE}>Home page</Nav.Link>
                 </div>
             );
         }

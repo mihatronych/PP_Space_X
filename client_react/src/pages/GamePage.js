@@ -8,7 +8,7 @@ const MainPage = () => {
 
     return (
         <Container className="">
-            <SpaceInvaders width={640} height={480} initialEnemies={70} />
+            <SpaceInvaders width={640} height={480} initialEnemies={40} />
         </Container>
     );
 }

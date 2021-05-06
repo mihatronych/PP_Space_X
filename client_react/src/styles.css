@@ -1,13 +1,95 @@
 body {
-    background-image: url("../public/img/bg.jpeg");
-    /*background-repeat: no-repeat;*/
-    /*background-attachment: fixed;*/
-    /*background-size: cover;*/
+    background-image: url('img/bg.jpeg');
     background-color: #000333 !important;
+    font-family: 'VT323', monospace !important;
+    color: #728AB7 !important;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 33px;
+}
+a{
+    color: #b4bcd4;
+}
+a:hover{
+    color: #FFFFFF;
+    text-decoration: none;
 }
 .auth_card{
     border: 0 solid #000000;
-    background-color: #F0F0F3;
     width: 420px;
+    background-color: rgba(0, 0, 255,0);
+}
 
+.form-control:not(active){
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid #728AB7;
+    outline: 0;
+    font-size: 1.3rem;
+    color: #FFFFFF;
+    background: transparent;
+    transition: border-color 0.2s;
+    text-align: center;
+}
+.form-control::placeholder{
+    color: #728AB7;
+    text-align: center;
+}
+
+.form-control:focus{
+    border-bottom: 2px solid #FFFFFF;
+    background: transparent;
+    color: #FFFFFF;
+    outline: 0;
+    text-align: center;
+}
+
+.btn{
+    border:solid 2px #728AB7;
+    border-radius: 5px;
+    background: rgba(255, 255, 255,0);
+    font-size: 1.3rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 33px;
+
+}
+.btn:not(:disabled):not(.disabled) {
+    background-color: transparent;
+    transition:box-shadow 0.3s cubic-bezier(.79,.21,.06,.81);
+    border-radius: 3px;
+    border:solid 2px #728AB7;
+    color: #728AB7;
+    outline: none !important;
+
+}
+.btn-primary:not(:disabled):not(.disabled):active{
+    border-radius: 3px;
+    background-color: #728AB7;
+    background-color: rgba(180,188,212, 0.1);
+    border:solid 2px rgba(180,188,212, 0.1);
+    color: #b4bcd4;
+    outline: none !important;
+}
+.btn-primary:not(:disabled):not(.disabled):hover{
+    transition:box-shadow 0.3s cubic-bezier(.79,.21,.06,.81);
+    border-radius: 3px;
+    background-color: rgba(180,188,212, 0.2);
+    border:solid 2px rgba(180,188,212, 0.2);
+    color: #b4bcd4;
+    outline: none !important;
+}
+.btn-primary:focus:not(:focus-visible) {
+    outline: none !important;
+    background-color: rgba(180,188,212, 0.1);
+    border:solid 2px rgba(180,188,212, 0.1);
+    color: #b4bcd4;
+}
+.menu{
+    font-size: 32px;
+    align-items: center;
+}
+th, td{
+    color: #b4bcd4;
 }
