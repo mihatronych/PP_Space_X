@@ -1,14 +1,41 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Card, Container, Form, Nav} from "react-bootstrap";
-import {Link, NavLink, useLocation} from "react-router-dom";
+import {Link, NavLink, useLocation, useHistory} from "react-router-dom";
 import {GAME_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 import '../styles.css';
 import {Context} from "../index";
+import {login, registration} from "../http/user_api";
+import {observer} from "mobx-react-lite";
 
-const Auth = () => {
+const Auth = observer(() => {
     const location = useLocation()
     const isLogin = location.pathname === LOGIN_ROUTE
+    const history = useHistory()
     const {user} = useContext(Context)
+    const {game} = useContext(Context)
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [nickname, setNickname] = useState('')
+    const [countryId, setCountryId] = useState('')
+    const click = async () => {
+        try {
+            let data;
+            if (isLogin) {
+                data = await login(email, password);
+                console.log(data)
+            } else {
+                data = await registration(email, countryId, nickname, password);
+                console.log(data)
+            }
+            user.setUser(user)
+            user.setIsAuth(true)
+            history.push(MAIN_ROUTE)
+        } catch (e) {
+            alert(e.response.data.message)
+        }
+
+    }
     return (
         <Container
             className="d-flex justify-content-center align-items-center "
@@ -20,39 +47,62 @@ const Auth = () => {
                     <Form.Control
                         className="mt-3 input_style"
                         placeholder="Email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                     />
                     {isLogin ? "" :
+
+                        <Form.Control
+                            className="mt-3 input_style"
+                            placeholder="Nickname"
+                            value={nickname}
+                            onChange={e => setNickname(e.target.value)}
+                        />
+                    }
+                    {isLogin ? "" :
+
                         <Form.Control as="select"
                                       className="mt-3 text-center"
-                                      placeholder="Country">
-                            <option>Russia</option>
-                            <option>USA</option>
-                            <option>Kazakhstan</option>
+                                      placeholder="Country"
+                                      value={countryId}
+                                      onChange={e => setCountryId(e.target.value)}
+                        >
+
+                            {game.countries.map(country =>
+                                <option value={country.id}>{country.name}</option>
+                            )}
                         </Form.Control>
                     }
                     <Form.Control
                         className="mt-3"
                         placeholder="Password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        type="password"
                     />
 
-                    {isLogin ? "" :
+                    {/*{isLogin ? "" :*/}
 
-                        <Form.Control
-                            className="mt-3"
-                            placeholder="Repeat password"
-                        />
-                    }
-                    <Button className="mt-4 " as={Link} to={MAIN_ROUTE}>{isLogin ? 'Log in' : 'Sign up'}</Button>
+                    {/*    <Form.Control*/}
+                    {/*        className="mt-3"*/}
+                    {/*        placeholder="Repeat password"*/}
+                    {/*        value={password}*/}
+                    {/*        onChange={e => setPassword(e.target.value)}*/}
+                    {/*        type="password"*/}
+                    {/*    />*/}
+                    {/*}*/}
+                    <Button onClick={click} className="mt-4 " as={Link}
+                            to={MAIN_ROUTE}>{isLogin ? 'Log in' : 'Sign up'}</Button>
                     {isLogin ?
                         <div className="d-flex justify-content-center mt-2 small-text">Don't have an account? <NavLink
                             to={REGISTRATION_ROUTE}> Sign up</NavLink></div>
                         :
                         <div className="d-flex justify-content-center mt-2 small-text">Already have an account? <NavLink
-                            to={LOGIN_ROUTE} > Log in</NavLink></div>
+                            to={LOGIN_ROUTE}> Log in</NavLink></div>
                     }
                 </Form>
             </Card>
         </Container>
     );
-};
+});
 export default Auth;

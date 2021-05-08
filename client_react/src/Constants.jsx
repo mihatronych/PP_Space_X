@@ -17,5 +17,5 @@ export const KEY_TRIGGER = "key";
 export const BULLET_MAX_SPEED = 5;
 
 export const ENEMY_SHOTS_PER_MINUTE = 1;
-export const ENEMY_RADIUS = 10;
+export const ENEMY_RADIUS = 50;
 export const MS_PER_FRAME = 16;

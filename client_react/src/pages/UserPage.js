@@ -1,12 +1,13 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Button, Card, Col, Container, Form, Nav, Row, Table} from "react-bootstrap";
 import '../styles.css';
 import {Link} from "react-router-dom";
 import {MAIN_ROUTE} from "../utils/consts";
+import {Context} from "../index";
 
 
 const UserPage = () => {
-
+    const {user} = useContext(Context)
     return (
         <Container className="">
 

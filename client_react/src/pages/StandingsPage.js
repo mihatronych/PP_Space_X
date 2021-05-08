@@ -1,11 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Container, Nav, Table} from "react-bootstrap";
 import '../styles.css';
 import {Link} from "react-router-dom";
 import {MAIN_ROUTE} from "../utils/consts";
+import {Context} from "../index";
 
 const StandingsPage = () => {
-
+    const {game} = useContext(Context)
     return (
         <Container className="d-flex justify-content-center"
                    style={{height: window.innerHeight - 70}}>
@@ -24,18 +25,14 @@ const StandingsPage = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>1900</td>
-                        <td>1:23</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <td>1290</td>
-                        <td>1:00</td>
-                    </tr>
+                    {game.sessions.map(session =>
+                        <tr>
+                            <td>{session.id}</td>
+                            <td>{session.id}</td>
+                            <td>{session.score}</td>
+                            <td>{session.time_session}</td>
+                        </tr>
+                    )}
                     </tbody>
                 </Table>
             </div>

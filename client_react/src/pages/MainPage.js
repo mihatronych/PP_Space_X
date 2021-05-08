@@ -1,12 +1,18 @@
 import React, {useContext} from "react";
 import {Container, Nav} from "react-bootstrap";
 import '../styles.css';
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {ABOUT_US_ROUTE, GAME_ROUTE, LOGIN_ROUTE, STANDINGS_ROUTE, USER_ROUTE} from "../utils/consts";
 import {Context} from "../index";
 
 const MainPage = () => {
     const {user} = useContext(Context)
+    const history = useHistory()
+
+    const logOut = () => {
+        user.setUser({})
+        user.setIsAuth(false)
+    }
     return (
         <Container className="d-flex justify-content-center align-items-center "
                    style={{height: window.innerHeight - 70}}>
@@ -16,7 +22,7 @@ const MainPage = () => {
                 <Nav.Link className="my-3" as={Link} to={STANDINGS_ROUTE}> Standings </Nav.Link>
                 <Nav.Link className="my-3" as={Link} to={USER_ROUTE}> My page</Nav.Link>
                 <Nav.Link className="my-3" as={Link} to={ABOUT_US_ROUTE}> About us</Nav.Link>
-                <Nav.Link className="my-3" as={Link} to={LOGIN_ROUTE} onClick={()=>user.setIsAuth(false)} > Exit</Nav.Link>
+                <Nav.Link className="my-3" as={Link} to={LOGIN_ROUTE} onClick={() => logOut()} > Exit</Nav.Link>
             </Nav>
         </Container>
     );

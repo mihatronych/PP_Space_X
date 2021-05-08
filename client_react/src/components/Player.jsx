@@ -1,7 +1,9 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import d3 from "d3";
-
 import Actions from "../Actions";
+import '../styles.css';
+import tesla from '../img/tesla.png';
+
 
 export default class Player extends Component {
     componentDidMount() {
@@ -13,18 +15,19 @@ export default class Player extends Component {
         });
 
         d3.select(node).call(drag);
+
+
     }
 
     render() {
         let position = "translate(" + this.props.x + ", " + this.props.y + ")";
-
         return (
             <g transform={position} ref="player">
-                <rect
-                    x={-this.props.w / 2}
-                    y={-this.props.h}
-                    width={this.props.w + 10}
-                    height={this.props.h + 5}
+                <image xlinkHref={tesla}
+                       x={-this.props.w / 2}
+                       y={-this.props.h-20}
+                       width={this.props.w + 50}
+                       height={this.props.h + 30}
                 />
             </g>
         );

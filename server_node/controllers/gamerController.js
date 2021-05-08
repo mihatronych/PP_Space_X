@@ -15,7 +15,7 @@ const generateJwt = (id, nickname, email, countryId) =>{
 class GamerController{
     async registration(req, res, next){
         const {nickname, email, password, countryId} = req.body
-        if(!email || !password || !nickname){
+        if(!email || !password || !nickname || !countryId){
             return next(ApiError.badRequest('Некорректный nickname, email или password'))
         }
         const candidate1 = await Gamer.findOne({where: {email}})
@@ -41,12 +41,12 @@ class GamerController{
         if(!comparePassword){
             return next(ApiError.internal('Указан неверный пароль'))
         }
-        const token = generateJwt(gamer.id, gamer.nickname, gamer.email, gamer.countryId)
+        const token = generateJwt(gamer.id, gamer.email)
         return res.json({token})
     }
     async check(req, res, next){
         console.log(req.gamer.nickname);
-        const token = generateJwt(req.gamer.id, req.gamer.nickname, req.gamer.email, req.gamer.countryId)
+        const token = generateJwt(req.gamer.id, req.gamer.email)
         return res.json({token})
     }
     async getAll(req, res){

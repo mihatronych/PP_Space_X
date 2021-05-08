@@ -93,3 +93,8 @@ a:hover{
 th, td{
     color: #b4bcd4;
 }
+
+.tesla{
+    background-color: #FFFFFF;
+    background-image: url('img/tesla.png');
+}

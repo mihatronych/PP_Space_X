@@ -1,7 +1,7 @@
 export const LOGIN_ROUTE = '/login'
 export const REGISTRATION_ROUTE = '/registration'
 export const MAIN_ROUTE = '/main'
-export const USER_ROUTE = '/user'
+export const USER_ROUTE = '/gamer'
 export const GAME_ROUTE = '/game'
 export const STANDINGS_ROUTE = '/standings'
 export const ABOUT_US_ROUTE = '/about_us'
