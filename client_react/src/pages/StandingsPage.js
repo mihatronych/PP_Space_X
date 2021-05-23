@@ -28,7 +28,7 @@ const StandingsPage = () => {
                     {game.sessions.map(session =>
                         <tr>
                             <td>{session.id}</td>
-                            <td>{session.id}</td>
+                            <td>{session.gamerId}</td>
                             <td>{session.score}</td>
                             <td>{session.time_session}</td>
                         </tr>

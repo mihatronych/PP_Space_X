@@ -25,7 +25,8 @@ const Auth = observer(() => {
                 data = await login(email, password);
                 console.log(data)
             } else {
-                data = await registration(email, countryId, nickname, password);
+                console.log(email, nickname,countryId, password)
+                data = await registration(email, nickname,countryId, password);
                 console.log(data)
             }
             user.setUser(user)
@@ -67,8 +68,9 @@ const Auth = observer(() => {
                                       value={countryId}
                                       onChange={e => setCountryId(e.target.value)}
                         >
-
+                            <option defaultChecked>----< /option>
                             {game.countries.map(country =>
+
                                 <option value={country.id}>{country.name}</option>
                             )}
                         </Form.Control>
