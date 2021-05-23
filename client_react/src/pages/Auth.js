@@ -6,6 +6,7 @@ import '../styles.css';
 import {Context} from "../index";
 import {login, registration} from "../http/user_api";
 import {observer} from "mobx-react-lite";
+import {useCookies} from 'react-cookie'
 
 const Auth = observer(() => {
     const location = useLocation()
@@ -18,21 +19,32 @@ const Auth = observer(() => {
     const [password, setPassword] = useState('')
     const [nickname, setNickname] = useState('')
     const [countryId, setCountryId] = useState('')
+    const [cookies, setCookie] = useCookies(['id'])
+
+    const setOurCookie = async (jwt)=>{
+        console.log(jwt)
+        let exp = jwt.exp
+        setCookie('id', jwt.id, {path: '/', exp})
+    }
     const click = async () => {
+
         try {
             let data;
             if (isLogin) {
                 data = await login(email, password);
+                await setOurCookie(data)
                 console.log(data)
             } else {
-                console.log(email, nickname,countryId, password)
-                data = await registration(email, nickname,countryId, password);
+                console.log(email, nickname, countryId, password)
+                data = await registration(email, nickname, countryId, password);
+                await setOurCookie(data)
                 console.log(data)
             }
-            user.setUser(user)
             user.setIsAuth(true)
+            user.setUser(data)
             history.push(MAIN_ROUTE)
         } catch (e) {
+            alert(e)
             alert(e.response.data.message)
         }
 
