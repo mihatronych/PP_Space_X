@@ -9,11 +9,27 @@ import Player from "./Player";
 import {Link} from "react-router-dom";
 import {MAIN_ROUTE} from "../utils/consts";
 import {Nav} from "react-bootstrap";
+import jwt_decode from "jwt-decode";
+import {createSession} from "../http/space_x_api";
 
+let cookies = jwt_decode(localStorage.getItem('token'))
 
 class SpaceInvaders extends Component {
     timer;
+    time;
 
+
+
+    // const addSession = () => {
+    //     const score = document.getElementById('score').value;
+    //     // let now = new Date();
+    //     // let nowDateTime = now.toISOString();
+    //     // let nowDate = nowDateTime.split('T')[0];
+    //     let time = document.getElementById('time').value;
+    //     // let target = new Date(nowDate + time );
+    //     createSession({gamerId: parseInt(cookies.id), score: parseInt(score), time_session: time  }).then()
+    //
+    // }
     constructor() {
         super();
         this.state = Store.getGameState();
@@ -79,7 +95,8 @@ class SpaceInvaders extends Component {
             secs.innerText = S;
             mins.innerText = M;
             hour.innerText = H;
-            time.value = H+":"+M+":"+S
+            time.value = H+":"+M+":"+S;
+
             //Тикает всё через одну функцию, раз в секунду.
         }, 1000);
 
@@ -140,7 +157,8 @@ class SpaceInvaders extends Component {
                 explainerText =
                     "You shot all the invaders and saved the planet \(^w^)/. Score: " + this.props.initialEnemies;
             }
-
+            let time = document.getElementById('time').value;
+            createSession({gamerId: parseInt(cookies.id), score: score, time_session: time  }).then()
             return (
                 <div className="text-center">
                     <h1>{endGameText}</h1>

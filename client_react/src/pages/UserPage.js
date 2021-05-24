@@ -10,7 +10,12 @@ import {update} from "../http/user_api";
 import jwt_decode from "jwt-decode";
 
 
-//to do alert update
+//to do:
+//сделать выподающий список
+//какое-то действие при нажатии на обновить
+//скролл таблицы ВЕЗДЕ
+//сохраниене результатов автоматически
+//
 const UserPage = observer(() => {
     const {user, game} = useContext(Context)
     const cookies = jwt_decode(localStorage.getItem('token'))

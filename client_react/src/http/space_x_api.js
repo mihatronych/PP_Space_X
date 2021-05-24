@@ -10,7 +10,7 @@ export const fetchGamer = async () => {
     return data
 }
 export const createSession = async (session) => {
-    // console.log(score, time_session, gamerId)
+    console.log(session)
     const {data} = await $authHost.post('api/session/', session)
     console.log(data)
     return data
