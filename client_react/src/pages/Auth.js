@@ -6,8 +6,8 @@ import '../styles.css';
 import {Context} from "../index";
 import {login, registration} from "../http/user_api";
 import {observer} from "mobx-react-lite";
-import {useCookies} from 'react-cookie'
 import {fetchCountry, fetchGamer, fetchSession} from "../http/space_x_api";
+import jwt_decode from "jwt-decode";
 
 const Auth = observer(() => {
     const location = useLocation()
@@ -20,13 +20,8 @@ const Auth = observer(() => {
     const [password, setPassword] = useState('')
     const [nickname, setNickname] = useState('')
     const [countryId, setCountryId] = useState('')
-    const [cookies, setCookie] = useCookies(['id'])
+    const cookies = jwt_decode(localStorage.getItem('token'))
 
-    const setOurCookie = async (jwt)=>{
-        console.log(jwt)
-        let exp = jwt.exp
-        setCookie('id', jwt.id, {path: '/', exp})
-    }
     useEffect(() => {
         fetchCountry().then(data => game.setCountries(data))
     }, [])
@@ -37,12 +32,14 @@ const Auth = observer(() => {
             let data;
             if (isLogin) {
                 data = await login(email, password);
-                await setOurCookie(data)
+                // await setOurCookie(data)
                 console.log(data)
+
             } else {
                 console.log(email, nickname, countryId, password)
                 data = await registration(email, nickname, countryId, password);
-                await setOurCookie(data)
+                // await setOurCookie(data)
+
                 console.log(data)
             }
             user.setIsAuth(true)

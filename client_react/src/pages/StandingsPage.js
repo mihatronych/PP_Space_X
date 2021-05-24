@@ -13,8 +13,6 @@ const StandingsPage = observer(() => {
         useEffect(() => {
             fetchSession().then(data => game.setSessions(data.rows))
             fetchGamer().then(data => game.setGamers(data.rows))
-
-
         }, [])
         return (
             <Container className="d-flex justify-content-center"

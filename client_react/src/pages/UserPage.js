@@ -6,32 +6,34 @@ import {MAIN_ROUTE} from "../utils/consts";
 import {Context} from "../index";
 import {createSession, fetchCountry, fetchGamer, fetchSession} from "../http/space_x_api";
 import {observer} from "mobx-react-lite";
-import {useCookies} from "react-cookie";
 import {update} from "../http/user_api";
+import jwt_decode from "jwt-decode";
 
+
+//to do alert update
 const UserPage = observer(() => {
     const {user, game} = useContext(Context)
-    const [cookies] = useCookies(['id'])
+    const cookies = jwt_decode(localStorage.getItem('token'))
 
     useEffect(() => {
         fetchSession().then(data => game.setSessions(data.rows))
         fetchGamer().then(data => game.setGamers(data.rows))
         fetchCountry().then(data => game.setCountries(data))
-        fetchGamer().then(data =>  data.rows.map(data=> data.id === parseInt(cookies.id)? setEmail(data.email): undefined))
-        fetchGamer().then(data =>  data.rows.map(data=> data.id === parseInt(cookies.id)? setNickname(data.nickname): undefined))
-        fetchGamer().then(data =>  data.rows.map(data=> data.id === parseInt(cookies.id)? setCountryId(data.countryId): undefined))
+        fetchGamer().then(data => data.rows.map(data => data.id === parseInt(cookies.id) ? setEmail(data.email) : undefined))
+        fetchGamer().then(data => data.rows.map(data => data.id === parseInt(cookies.id) ? setNickname(data.nickname) : undefined))
+        fetchGamer().then(data => data.rows.map(data => data.id === parseInt(cookies.id) ? setCountryId(data.countryId) : undefined))
+        // fetchGamer().then(data => data.rows.map(data => data.id === parseInt(cookies.id) ? setPassword(data.password) : undefined))
     }, [])
 
 
-    const [email, setEmail] = useState('here email')
-    const [nickname, setNickname] = useState('here need to change to gamer nickname')
-    const [password, setPassword] = useState('Password')
-    const [countryId, setCountryId] = useState('etc.')
-
+    const [email, setEmail] = useState(undefined)
+    const [nickname, setNickname] = useState(undefined)
+    const [password, setPassword] = useState(undefined)
+    const [countryId, setCountryId] = useState(undefined)
 
 
     const Update = () => {
-        update({email:email, nickname:nickname, password:password,countryId:countryId}).then()
+        update({email: email, nickname: nickname, password: password, countryId: countryId}).then()
     }
 
     return (
@@ -57,20 +59,26 @@ const UserPage = observer(() => {
                             onChange={e => setEmail(e.target.value)}
                         />
                         <Form.Control
-                            className="mt-3 input_style"
+                            className="mt-3 input_style "
                             placeholder="Password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
+
                         />
                         <Form.Control as="select"
                                       className="mt-3 text-center"
                                       placeholder="Country">
-                            value={countryId}
+                            value={countryId} //
                             onChange={e => setCountryId(e.target.value)}
-                            <option defaultChecked>----< /option>
-                            {game.countries.map(country =>
-                                <option value={country.id}>{country.name}</option>
-                            )}
+
+                            {game.countries.map(country => {
+
+                                if (countryId === country.id) {
+                                    return <option defaultChecked value={country.id}>{country.name}</option>
+                                } else {
+                                    return <option value={country.id}>{country.name}</option>
+                                }
+                            })}
                         </Form.Control>
                         <Button className="mt-4" onClick={Update}>Update</Button>
                     </Form>

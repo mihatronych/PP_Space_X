@@ -6,6 +6,7 @@ module.exports = function (req, res, next){
     }
     try {
         const token = req.headers.authorization.split(' ')[1] //Bearer asfasnfkajsfnjk
+        // console.log("first", token)
         if(!token){
             return res.status(401).json({message: "Не авторизван"})
         }
@@ -13,6 +14,7 @@ module.exports = function (req, res, next){
         req.gamer = decoded
         next()
     } catch (e){
+        // console.log("second")
         res.status(401).json({message: "Не авторизован"})
     }
 }

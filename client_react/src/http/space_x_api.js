@@ -13,7 +13,6 @@ export const createSession = async (session) => {
     // console.log(score, time_session, gamerId)
     const {data} = await $authHost.post('api/session/', session)
     console.log(data)
-
     return data
 }
 export const fetchSession = async () => {

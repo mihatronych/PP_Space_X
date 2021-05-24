@@ -41,12 +41,11 @@ class GamerController{
         if(!comparePassword){
             return next(ApiError.internal('Указан неверный пароль'))
         }
-        const token = generateJwt(gamer.id, gamer.email)
+        const token = generateJwt(gamer.id, gamer.nickname, email, gamer.countryId)
         return res.json({token})
     }
     async check(req, res, next){
-        console.log(req.gamer.nickname);
-        const token = generateJwt(req.gamer.id, req.gamer.email)
+        const token = generateJwt(req.gamer.id, req.gamer.nickname, req.gamer.email, req.gamer.countryId)
         return res.json({token})
     }
     async getAll(req, res){
