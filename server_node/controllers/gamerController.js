@@ -82,7 +82,7 @@ class GamerController{
             email = cur_gamer.email;
         }else{
             const candidate1 = await Gamer.findOne({where: {email}})
-            if(candidate1 ){
+            if(candidate1 && candidate1.id !== id){
                 return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
             }
         }
@@ -90,7 +90,7 @@ class GamerController{
             nickname = cur_gamer.nickname;
         }else{
             const candidate2 = await Gamer.findOne({where: {nickname}})
-            if( candidate2){
+            if(candidate2 && candidate2.id !== id){
                 return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
             }
         }
