@@ -26,27 +26,27 @@ const Auth = observer(() => {
         fetchCountry().then(data => game.setCountries(data))
     }, [])
 
+
     const click = async () => {
 
         try {
             let data;
             if (isLogin) {
                 data = await login(email, password);
-                // await setOurCookie(data)
                 console.log(data)
 
             } else {
                 console.log(email, nickname, countryId, password)
                 data = await registration(email, nickname, countryId, password);
-                // await setOurCookie(data)
-
-                console.log(data)
             }
-            user.setIsAuth(true)
-            user.setUser(data)
-            history.push(MAIN_ROUTE)
+            console.log(data)
+            if(data) {
+                user.setIsAuth(true)
+                user.setUser(data)
+                history.push(MAIN_ROUTE)
+            }
         } catch (e) {
-
+            history.push(LOGIN_ROUTE)
             return alert(e.response.data.message)
         }
 
@@ -107,8 +107,7 @@ const Auth = observer(() => {
                     {/*        type="password"*/}
                     {/*    />*/}
                     {/*}*/}
-                    <Button onClick={click} className="mt-4 " as={Link}
-                            to={MAIN_ROUTE}>{isLogin ? 'Log in' : 'Sign up'}</Button>
+                    <Button onClick={click} className="mt-4 ">{isLogin ? 'Log in' : 'Sign up'}</Button>
                     {isLogin ?
                         <div className="d-flex justify-content-center mt-2 small-text">Don't have an account? <NavLink
                             to={REGISTRATION_ROUTE}> Sign up</NavLink></div>

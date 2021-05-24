@@ -77,7 +77,7 @@ class GamerController{
         const id = req.gamer.id;
         const cur_gamer = await Gamer.findOne({where: {id}});
 
-        if(email === undefined && email !==""){
+        if(email === undefined || email === ""){
             email = cur_gamer.email;
         }else{
             const candidate1 = await Gamer.findOne({where: {email}})
@@ -85,7 +85,7 @@ class GamerController{
                 return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
             }
         }
-        if(!nickname && nickname!==""){
+        if(!nickname || nickname===""){
             nickname = cur_gamer.nickname;
         }else{
             const candidate2 = await Gamer.findOne({where: {nickname}})
@@ -93,10 +93,15 @@ class GamerController{
                 return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
             }
         }
-        if(!password&& password!==""){
-            password = cur_gamer.password;
+
+        let hashPassword;
+        if(!password || password==="" || password===undefined){
+            hashPassword = cur_gamer.password;
         }
-        const hashPassword = await bcrypt.hash(password, 5);
+        else{
+            hashPassword = await bcrypt.hash(password, 5);
+        }
+
         if(!countryId && countryId!==""){
             countryId = cur_gamer.countryId;
         }
@@ -104,7 +109,7 @@ class GamerController{
             {where: {id}},
         ))).update({nickname: nickname, email:email, password:hashPassword, countryId:countryId},)
         const token = generateJwt(id, nickname, email, countryId)
-        return res.json({token})
+        return res.json({token, password})
     }
     async delete(req, res){    //Вот в этих функциях я максимально неуверен
         const {id} = req.params
