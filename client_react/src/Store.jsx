@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import Dispatcher from "./Dispatcher";
 import Actions from "./Actions";
 
+
 import {
     START_GAME,
     STOP_GAME,
@@ -19,6 +20,7 @@ import {
     ENEMY_RADIUS,
     MS_PER_FRAME
 } from "./Constants";
+
 
 const EventEmitter = require("events").EventEmitter;
 
@@ -100,7 +102,7 @@ class Store extends EventEmitter {
         });
     }
 
-    startGame(width, height, N_enemies) {
+    startGame(width, height, N_enemies, cookies) {
         Data = Data = {
             timer: null,
             ended: null,
@@ -218,7 +220,7 @@ class Store extends EventEmitter {
     }
 }
 
-Dispatcher.register(function(action) {
+Dispatcher.register(function (action) {
     switch (action.actionType) {
         case TIME_TICK:
             store.advanceGameState();

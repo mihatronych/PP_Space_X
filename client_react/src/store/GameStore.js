@@ -2,12 +2,7 @@ import {makeAutoObservable} from "mobx";
 
 export default class GameStore {
     constructor() {
-        this._countries = [
-            {id: 1, name: "Russia"},
-            {id: 3, name: "USA"},
-            {id: 4, name: "Kazakhstan"},
-            {id: 5, name: "South Korea"}
-        ]
+        this._countries = []
         this._sessions = []
         this._gamers = []
         makeAutoObservable(this)

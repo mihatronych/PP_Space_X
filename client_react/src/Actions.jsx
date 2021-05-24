@@ -1,4 +1,6 @@
 import Dispatcher from "./Dispatcher";
+
+
 import {
     START_GAME,
     STOP_GAME,
@@ -10,14 +12,19 @@ import {
     PLAYER_SHOOT,
     GAME_OVER
 } from "./Constants";
+import {Context} from "./index";
 
 export default {
-    start_game(width, height, N_enemies) {
+
+
+
+    start_game(width, height, N_enemies, cookies) {
         Dispatcher.dispatch({
             actionType: START_GAME,
             width: width,
             height: height,
-            N_enemies: N_enemies
+            N_enemies: N_enemies,
+            cookies: cookies
         });
     },
 

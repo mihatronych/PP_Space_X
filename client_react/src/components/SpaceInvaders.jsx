@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 import Store from "../Store";
 import Actions from "../Actions";
@@ -13,6 +13,7 @@ import {Nav} from "react-bootstrap";
 
 class SpaceInvaders extends Component {
     timer;
+
     constructor() {
         super();
         this.state = Store.getGameState();
@@ -44,35 +45,43 @@ class SpaceInvaders extends Component {
 
     };
 
-    game_timer = () =>{
+    game_timer = () => {
         const hour = document.getElementById('hour');
         const mins = document.getElementById('mins');
         const secs = document.getElementById('secs');
+        const time = document.getElementById('time');
         let S = '00', M = '00', H = '00';
 
-        this.timer = setInterval(function(){
+        this.timer = setInterval(function () {
             //Плюсик перед строкой преобразует его в число
-            S = +S +1;
+            S = +S + 1;
             //Если результат меньше 10, прибавляем впереди строку '0'
-            if( S < 10 ) { S = '0' + S; }
-            if( S === 60 ) {
+            if (S < 10) {
+                S = '0' + S;
+            }
+            if (S === 60) {
                 S = '00';
                 //Как только секунд стало 60, добавляем +1 к минутам
                 M = +M + 1;
                 //Дальше то же самое, что и для секунд
-                if( M < 10 ) { M = '0' + M; }
-                if( M === 60 ) {
+                if (M < 10) {
+                    M = '0' + M;
+                }
+                if (M === 60) {
                     //Как только минут стало 60, добавляем +1 к часам.
                     M = '00';
                     H = +H + 1;
-                    if( H < 10 ) { H = '0' + H; }
+                    if (H < 10) {
+                        H = '0' + H;
+                    }
                 }
             }
             secs.innerText = S;
             mins.innerText = M;
             hour.innerText = H;
+            time.value = H+":"+M+":"+S
             //Тикает всё через одну функцию, раз в секунду.
-        },1000);
+        }, 1000);
 
     };
 
@@ -110,29 +119,36 @@ class SpaceInvaders extends Component {
 
     render() {
         if (this.state.started) {
+
             return (
                 <svg width={this.props.width} height={this.props.height}>
-                    <Enemies enemies={this.state.enemies} />
-                    <Bullets bullets={this.state.bullets} />
+                    <Enemies enemies={this.state.enemies}/>
+                    <Bullets bullets={this.state.bullets}/>
                     <Player {...this.state.player} />
                 </svg>
             );
         } else if (this.state.ended) {
             clearInterval(this.timer);
-            let endGameText = "Game over",
-                explainerText = "You got shot by an invader or yourself";
+            let timer = this.timer;
+            let score = this.props.initialEnemies - this.state.enemies.filter(e => e.alive).length;
+            let endGameText = "YOU DIED",
+                explainerText = "You got shot by an invader or yourself. Score: " + score;
 
             if (!this.state.enemies.filter(e => e.alive).length) {
                 clearInterval(this.timer);
                 endGameText = "You win!";
                 explainerText =
-                    "You shot all the invaders and saved the planet \(^w^)/";
+                    "You shot all the invaders and saved the planet \(^w^)/. Score: " + this.props.initialEnemies;
             }
 
             return (
                 <div className="text-center">
                     <h1>{endGameText}</h1>
                     <p className="lead">{explainerText}</p>
+                    <form>
+                    <input id="score" className="invisible" value={score}/>
+                    <input id="timer" className="invisible" value={timer}/>
+                    </form>
                     <p>
                         <button
                             onClick={this.start_game}

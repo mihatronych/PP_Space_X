@@ -78,7 +78,7 @@ class GamerController{
         const id = req.gamer.id;
         const cur_gamer = await Gamer.findOne({where: {id}});
 
-        if(email === undefined){
+        if(email === undefined && email !==""){
             email = cur_gamer.email;
         }else{
             const candidate1 = await Gamer.findOne({where: {email}})
@@ -86,7 +86,7 @@ class GamerController{
                 return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
             }
         }
-        if(!nickname){
+        if(!nickname && nickname!==""){
             nickname = cur_gamer.nickname;
         }else{
             const candidate2 = await Gamer.findOne({where: {nickname}})
@@ -94,11 +94,11 @@ class GamerController{
                 return next(ApiError.badRequest('Пользователь с таким email или nickname уже существует'))
             }
         }
-        if(!password){
+        if(!password&& password!==""){
             password = cur_gamer.password;
         }
         const hashPassword = await bcrypt.hash(password, 5);
-        if(!countryId){
+        if(!countryId && countryId!==""){
             countryId = cur_gamer.countryId;
         }
         const gamer = await (await (Gamer.findOne(

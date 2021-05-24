@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Container, Form, Nav} from "react-bootstrap";
 import {Link, NavLink, useLocation, useHistory} from "react-router-dom";
 import {GAME_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
@@ -7,6 +7,7 @@ import {Context} from "../index";
 import {login, registration} from "../http/user_api";
 import {observer} from "mobx-react-lite";
 import {useCookies} from 'react-cookie'
+import {fetchCountry, fetchGamer, fetchSession} from "../http/space_x_api";
 
 const Auth = observer(() => {
     const location = useLocation()
@@ -26,6 +27,10 @@ const Auth = observer(() => {
         let exp = jwt.exp
         setCookie('id', jwt.id, {path: '/', exp})
     }
+    useEffect(() => {
+        fetchCountry().then(data => game.setCountries(data))
+    }, [])
+
     const click = async () => {
 
         try {
@@ -44,8 +49,8 @@ const Auth = observer(() => {
             user.setUser(data)
             history.push(MAIN_ROUTE)
         } catch (e) {
-            alert(e)
-            alert(e.response.data.message)
+
+            return alert(e.response.data.message)
         }
 
     }
