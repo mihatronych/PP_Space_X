@@ -27,9 +27,10 @@ export const login = async (email, password) => {
 }
 
 export const update = async (data_up) =>{
-    const {data} = await $authHost.put('api/gamer/', data_up)
+    const {data} = await $authHost.put('api/gamer/', data_up) //$authHost
     return data
 }
+
 export const check = async () => {
     const {data} = await $authHost.get('api/gamer/auth' )
     localStorage.setItem('token', data.token)
