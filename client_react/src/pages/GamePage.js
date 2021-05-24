@@ -11,17 +11,6 @@ import jwt_decode from "jwt-decode";
 const MainPage = observer(() => {
     const cookies = jwt_decode(localStorage.getItem('token'))
 
-
-    // const addSession = () => {
-    //     const score = document.getElementById('score').value;
-    //     // let now = new Date();
-    //     // let nowDateTime = now.toISOString();
-    //     // let nowDate = nowDateTime.split('T')[0];
-    //     let time = document.getElementById('time').value;
-    //     // let target = new Date(nowDate + time );
-    //     createSession({gamerId: parseInt(cookies.id), score: parseInt(score), time_session: time  }).then()
-    //
-    // }
     this.state = Store.getGameState();
 
     return (
@@ -35,7 +24,6 @@ const MainPage = observer(() => {
                 <div id="secs">< /div>
             </div>
             <input className="invisible" id="time"/>
-            {/*<Button onClick={addSession}> Save result</Button>*/}
             <SpaceInvaders width={800} height={600} initialEnemies={40}/>
 
 

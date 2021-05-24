@@ -18,18 +18,6 @@ class SpaceInvaders extends Component {
     timer;
     time;
 
-
-
-    // const addSession = () => {
-    //     const score = document.getElementById('score').value;
-    //     // let now = new Date();
-    //     // let nowDateTime = now.toISOString();
-    //     // let nowDate = nowDateTime.split('T')[0];
-    //     let time = document.getElementById('time').value;
-    //     // let target = new Date(nowDate + time );
-    //     createSession({gamerId: parseInt(cookies.id), score: parseInt(score), time_session: time  }).then()
-    //
-    // }
     constructor() {
         super();
         this.state = Store.getGameState();
