@@ -13,14 +13,14 @@ const StandingsPage = observer(() => {
     const {game} = useContext(Context)
 
     useEffect(() => {
-        fetchSession().then(data => game.setSessions(data.rows))
-        fetchGamer().then(data => game.setGamers(data.rows))
+        fetchSession().then(data => game.setSessions(data))
+        fetchGamer().then(data => game.setGamers(data))
     }, [])
 
 
     const [pageNumber, setPageNumber] = useState(0)
 
-    const sessionsPerPage = 11
+    const sessionsPerPage = 10
     const pagesVisited = pageNumber * sessionsPerPage
 
     console.log(game.sessions)

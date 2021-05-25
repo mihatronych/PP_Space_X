@@ -18,10 +18,10 @@ class SessionController{
 
         let sessions;
         if (!gamerId){
-            sessions = await Session.findAndCountAll()
+            sessions = await Session.findAll()
         }
         if (gamerId){
-            sessions = await Session.findAndCountAll({where: {gamerId}})
+            sessions = await Session.findAll({where: {gamerId}})
         }
         return res.json(sessions)
     }

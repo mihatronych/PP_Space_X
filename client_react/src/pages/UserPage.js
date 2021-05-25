@@ -1,13 +1,15 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Button, Card, Col, Container, Form, Nav, Row, Table} from "react-bootstrap";
+import React, {Component, useContext, useEffect, useState} from "react";
+import {Alert, Button, Card, Col, Container, Form, Nav, Row, Table} from "react-bootstrap";
 import '../styles.css';
 import {Link} from "react-router-dom";
 import {MAIN_ROUTE} from "../utils/consts";
 import {Context} from "../index";
-import {createSession, fetchCountry, fetchGamer, fetchSession} from "../http/space_x_api";
+import {fetchCountry, fetchGamer, fetchSession} from "../http/space_x_api";
 import {observer} from "mobx-react-lite";
 import {update} from "../http/user_api";
 import jwt_decode from "jwt-decode";
+import {render} from "react-dom";
+
 
 
 //to do:
@@ -21,15 +23,13 @@ const UserPage = observer(() => {
     const cookies = jwt_decode(localStorage.getItem('token'))
 
     useEffect(() => {
-        fetchSession().then(data => game.setSessions(data.rows))
-        fetchGamer().then(data => game.setGamers(data.rows))
+        fetchSession().then(data => game.setSessions(data))
+        fetchGamer().then(data => game.setGamers(data))
         fetchCountry().then(data => game.setCountries(data))
-        fetchGamer().then(data => data.rows.map(data => data.id === parseInt(cookies.id) ? setEmail(data.email) : undefined))
-        fetchGamer().then(data => data.rows.map(data => data.id === parseInt(cookies.id) ? setNickname(data.nickname) : undefined))
-        fetchGamer().then(data => data.rows.map(data => data.id === parseInt(cookies.id) ? setCountryId(data.countryId) : undefined))
-        // fetchGamer().then(data => data.rows.map(data => data.id === parseInt(cookies.id) ? setPassword(data.password) : undefined))
+        fetchGamer().then(data => data.map(data => data.id === parseInt(cookies.id) ? setEmail(data.email) : undefined))
+        fetchGamer().then(data => data.map(data => data.id === parseInt(cookies.id) ? setNickname(data.nickname) : undefined))
+        fetchGamer().then(data => data.map(data => data.id === parseInt(cookies.id) ? setCountryId(data.countryId) : undefined))
     }, [])
-
 
     const [email, setEmail] = useState(undefined)
     const [nickname, setNickname] = useState(undefined)
@@ -39,11 +39,12 @@ const UserPage = observer(() => {
 
     const Update = () => {
         update({email: email, nickname: nickname, password: password, countryId: countryId}).then()
+        alert("Данные обновлены");
     }
+
 
     return (
         <Container className="">
-
             <div className="flex-column text-center">
                 <Nav.Link className="h2" as={Link} to={MAIN_ROUTE}>Home page</Nav.Link>
             </div>
@@ -72,9 +73,9 @@ const UserPage = observer(() => {
                         />
                         <Form.Control as="select"
                                       className="mt-3 text-center"
-                                      placeholder="Country">
-                            value={countryId} //
-                            onChange={e => setCountryId(e.target.value)}
+                                      placeholder="Country"
+                                      value={countryId}
+                                      onChange={e => setCountryId(e.target.value)}>
 
                             {game.countries.map(country => {
 
@@ -87,6 +88,7 @@ const UserPage = observer(() => {
                         </Form.Control>
                         <Button className="mt-4" onClick={Update}>Update</Button>
                     </Form>
+
                 </Col>
                 <Col className="flex-column">
                     <h1>User score</h1>

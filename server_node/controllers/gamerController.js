@@ -52,10 +52,10 @@ class GamerController{
         let {countryId} = req.body
         let gamers;
         if (!countryId){
-            gamers = await Gamer.findAndCountAll()
+            gamers = await Gamer.findAll()
         }
         if (countryId){
-            gamers = await Gamer.findAndCountAll({where: {countryId}})
+            gamers = await Gamer.findAll({where: {countryId}})
         }
         return res.json(gamers)
     }
