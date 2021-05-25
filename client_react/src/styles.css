@@ -98,3 +98,35 @@ th, td{
     background-color: #FFFFFF;
     background-image: url('img/tesla.png');
 }
+
+.paginationBttns {
+    width: 80%;
+    height: 40px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.paginationBttns a {
+    padding: 10px;
+    margin: 8px;
+    border-radius: 5px;
+    border: 1px solid  #728AB7;
+    color:  #728AB7;
+    cursor: pointer;
+}
+
+.paginationBttns a:hover {
+    color: white;
+    background-color:  #000333;
+}
+
+.paginationActive a {
+    color: white;
+    background-color:  #000333;
+}
+
+.paginationDisabled a {
+    color: #728AB7;
+    background-color: #728AB7;
+}
