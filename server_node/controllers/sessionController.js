@@ -14,16 +14,14 @@ class SessionController{
     }
 
     async getAll(req, res){
-        let {gamerId, limit, page} = req.body
-        page = page || 1
-        limit = limit || 9
-        let offset = page * limit - limit
+        let {gamerId} = req.body
+
         let sessions;
         if (!gamerId){
-            sessions = await Session.findAndCountAll({limit, offset})
+            sessions = await Session.findAndCountAll()
         }
         if (gamerId){
-            sessions = await Session.findAndCountAll({where: {gamerId}, limit, offset})
+            sessions = await Session.findAndCountAll({where: {gamerId}})
         }
         return res.json(sessions)
     }

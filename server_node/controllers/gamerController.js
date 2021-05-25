@@ -49,16 +49,13 @@ class GamerController{
         return res.json({token})
     }
     async getAll(req, res){
-        let {countryId, limit, page} = req.body
-        page = page || 1
-        limit = limit || 9
-        let offset = page * limit - limit
+        let {countryId} = req.body
         let gamers;
         if (!countryId){
-            gamers = await Gamer.findAndCountAll({limit, offset})
+            gamers = await Gamer.findAndCountAll()
         }
         if (countryId){
-            gamers = await Gamer.findAndCountAll({where: {countryId}, limit, offset})
+            gamers = await Gamer.findAndCountAll({where: {countryId}})
         }
         return res.json(gamers)
     }

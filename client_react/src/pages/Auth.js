@@ -26,9 +26,7 @@ const Auth = observer(() => {
         fetchCountry().then(data => game.setCountries(data))
     }, [])
 
-
     const click = async () => {
-
         try {
             let data;
             if (isLogin) {
