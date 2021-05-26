@@ -60,6 +60,10 @@ class SpaceInvaders extends Component {
 
     };
 
+    clear_game = () => {
+        this.setState(Store.clearGame());
+    };
+
     game_timer = () => {
         const hour = document.getElementById('hour');
         const mins = document.getElementById('mins');
@@ -157,7 +161,7 @@ class SpaceInvaders extends Component {
                     "You shot all the invaders and saved the planet \(^w^)/. Score: " + this.props.initialEnemies;
             }
             let time = document.getElementById('time').value;
-            createSession({gamerId: parseInt(storedToken.id), score: score, time_session: time  }).then()
+            createSession({gamerId: parseInt(jwt_decode(storedToken).id), score: score, time_session: time  }).then()
             return (
                 <div className="text-center">
                     <h1>{endGameText}</h1>
@@ -174,7 +178,7 @@ class SpaceInvaders extends Component {
                             Start Another Game
                         </button>
                     </p>
-                    <Nav.Link className="h3" as={Link} to={MAIN_ROUTE}>Home page</Nav.Link>
+                    <Nav.Link onClick={this.clear_game} className="h3" as={Link} to={MAIN_ROUTE}>Home page</Nav.Link>
                 </div>
             );
         } else {
@@ -195,7 +199,7 @@ class SpaceInvaders extends Component {
                         </button>
                     </p>
                     <p>Good luck LOL</p>
-                    <Nav.Link className="h3" as={Link} to={MAIN_ROUTE}>Home page</Nav.Link>
+                    <Nav.Link onClick={this.clear_game} className="h3" as={Link} to={MAIN_ROUTE}>Home page</Nav.Link>
                 </div>
             );
         }

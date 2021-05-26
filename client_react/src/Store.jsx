@@ -7,6 +7,7 @@ import Actions from "./Actions";
 import {
     START_GAME,
     STOP_GAME,
+    CLEAR_GAME,
     TIME_TICK,
     CHANGE_EVENT,
     EDGE,
@@ -102,7 +103,7 @@ class Store extends EventEmitter {
         });
     }
 
-    startGame(width, height, N_enemies, cookies) {
+    startGame(width, height, N_enemies) {
         Data = Data = {
             timer: null,
             ended: null,
@@ -134,6 +135,25 @@ class Store extends EventEmitter {
     stopGame() {
         Data.timer = clearInterval(Data.timer);
         Data.ended = true;
+    }
+
+    clearGame() {
+        Data = {
+            timer: null,
+            ended: null,
+            enemies: [],
+            player: {},
+            bullets: []
+        }
+        return {
+            timer: null,
+            ended: null,
+            enemies: [],
+            player: {},
+            bullets: []
+        };
+        //Data.timer = clearInterval(Data.timer);
+        //Data.ended = false;
     }
 
     advanceGameState() {
@@ -229,6 +249,11 @@ Dispatcher.register(function (action) {
 
         case START_GAME:
             store.startGame(action.width, action.height, action.N_enemies);
+            store.emitChange();
+            break;
+
+        case CLEAR_GAME:
+            store.clearGame();
             store.emitChange();
             break;
 

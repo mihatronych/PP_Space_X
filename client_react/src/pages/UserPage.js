@@ -37,9 +37,9 @@ const UserPage = observer(() => {
         fetchSession().then(data => game.setSessions(data))
         fetchGamer().then(data => game.setGamers(data))
         fetchCountry().then(data => game.setCountries(data))
-        fetchGamer().then(data => data.map(data => data.id === parseInt(storedToken.id) ? setEmail(data.email) : undefined))
-        fetchGamer().then(data => data.map(data => data.id === parseInt(storedToken.id) ? setNickname(data.nickname) : undefined))
-        fetchGamer().then(data => data.map(data => data.id === parseInt(storedToken.id) ? setCountryId(data.countryId) : undefined))
+        fetchGamer().then(data => data.map(data => data.id === parseInt(jwt_decode(storedToken).id) ? setEmail(data.email) : undefined))
+        fetchGamer().then(data => data.map(data => data.id === parseInt(jwt_decode(storedToken).id) ? setNickname(data.nickname) : undefined))
+        fetchGamer().then(data => data.map(data => data.id === parseInt(jwt_decode(storedToken).id) ? setCountryId(data.countryId) : undefined))
     }, [])
 
     const [email, setEmail] = useState(undefined)
@@ -114,7 +114,7 @@ const UserPage = observer(() => {
                         <tbody>
 
                         {game.sessions.map(data => {
-                                if (data.gamerId === parseInt(storedToken.id))
+                                if (data.gamerId === parseInt(jwt_decode(storedToken).id))
                                     return (
                                         <tr>
                                             <td>{data.gamerId}</td>
