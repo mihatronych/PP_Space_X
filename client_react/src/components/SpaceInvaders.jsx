@@ -12,7 +12,18 @@ import {Nav} from "react-bootstrap";
 import jwt_decode from "jwt-decode";
 import {createSession} from "../http/space_x_api";
 
-let cookies = jwt_decode(localStorage.getItem('token'))
+const storedToken = localStorage.getItem("token");
+if (storedToken){
+    let decodedData = jwt_decode(storedToken, { header: true });
+    let expirationDate = decodedData.exp;
+    let current_time = Date.now() / 1000;
+    if(expirationDate < current_time)
+    {
+        localStorage.removeItem("token");
+    }
+}
+
+//let cookies = jwt_decode(localStorage.getItem('token'))
 
 class SpaceInvaders extends Component {
     timer;
@@ -146,7 +157,7 @@ class SpaceInvaders extends Component {
                     "You shot all the invaders and saved the planet \(^w^)/. Score: " + this.props.initialEnemies;
             }
             let time = document.getElementById('time').value;
-            createSession({gamerId: parseInt(cookies.id), score: score, time_session: time  }).then()
+            createSession({gamerId: parseInt(storedToken.id), score: score, time_session: time  }).then()
             return (
                 <div className="text-center">
                     <h1>{endGameText}</h1>
