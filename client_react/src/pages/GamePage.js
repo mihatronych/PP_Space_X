@@ -21,7 +21,6 @@ const MainPage = observer(() => {
     }
 
     //const cookies = jwt_decode(localStorage.getItem('token'))
-
     this.state = Store.getGameState();
 
     return (

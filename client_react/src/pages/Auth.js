@@ -25,7 +25,7 @@ const Auth = observer(() => {
     if (storedToken){
         let decodedData = jwt_decode(storedToken, { header: true });
         let expirationDate = decodedData.exp;
-        var current_time = Date.now() / 1000;
+        let current_time = Date.now() / 1000;
         if(expirationDate < current_time)
         {
             localStorage.removeItem("token");

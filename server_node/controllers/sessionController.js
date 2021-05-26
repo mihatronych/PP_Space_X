@@ -33,7 +33,7 @@ class SessionController{
         return res.json(session)
     }
 
-    async update(req, res, next){ //Вот в этих функциях я максимально неуверен
+    async update(req, res, next){
         try {
 
             const {id, score, time_session, gamerId} = req.body
