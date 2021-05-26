@@ -9,7 +9,18 @@ import jwt_decode from "jwt-decode";
 
 
 const MainPage = observer(() => {
-    const cookies = jwt_decode(localStorage.getItem('token'))
+    const storedToken = localStorage.getItem("token");
+    if (storedToken){
+        let decodedData = jwt_decode(storedToken, { header: true });
+        let expirationDate = decodedData.exp;
+        var current_time = Date.now() / 1000;
+        if(expirationDate < current_time)
+        {
+            localStorage.removeItem("token");
+        }
+    }
+
+    //const cookies = jwt_decode(localStorage.getItem('token'))
 
     this.state = Store.getGameState();
 
@@ -21,7 +32,7 @@ const MainPage = observer(() => {
                 :
                 <div id="mins"></div>
                 :
-                <div id="secs">< /div>
+                <div id="secs"></div>
             </div>
             <input className="invisible" id="time"/>
             <SpaceInvaders width={800} height={600} initialEnemies={40}/>

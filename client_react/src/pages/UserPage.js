@@ -20,15 +20,26 @@ import {render} from "react-dom";
 //
 const UserPage = observer(() => {
     const {user, game} = useContext(Context)
-    const cookies = jwt_decode(localStorage.getItem('token'))
+    //const cookies = jwt_decode(localStorage.getItem('token'))
+
+    const storedToken = localStorage.getItem("token");
+    if (storedToken){
+        let decodedData = jwt_decode(storedToken, { header: true });
+        let expirationDate = decodedData.exp;
+        let current_time = Date.now() / 1000;
+        if(expirationDate < current_time)
+        {
+            localStorage.removeItem("token");
+        }
+    }
 
     useEffect(() => {
         fetchSession().then(data => game.setSessions(data))
         fetchGamer().then(data => game.setGamers(data))
         fetchCountry().then(data => game.setCountries(data))
-        fetchGamer().then(data => data.map(data => data.id === parseInt(cookies.id) ? setEmail(data.email) : undefined))
-        fetchGamer().then(data => data.map(data => data.id === parseInt(cookies.id) ? setNickname(data.nickname) : undefined))
-        fetchGamer().then(data => data.map(data => data.id === parseInt(cookies.id) ? setCountryId(data.countryId) : undefined))
+        fetchGamer().then(data => data.map(data => data.id === parseInt(storedToken.id) ? setEmail(data.email) : undefined))
+        fetchGamer().then(data => data.map(data => data.id === parseInt(storedToken.id) ? setNickname(data.nickname) : undefined))
+        fetchGamer().then(data => data.map(data => data.id === parseInt(storedToken.id) ? setCountryId(data.countryId) : undefined))
     }, [])
 
     const [email, setEmail] = useState(undefined)
@@ -103,7 +114,7 @@ const UserPage = observer(() => {
                         <tbody>
 
                         {game.sessions.map(data => {
-                                if (data.gamerId === parseInt(cookies.id))
+                                if (data.gamerId === parseInt(storedToken.id))
                                     return (
                                         <tr>
                                             <td>{data.gamerId}</td>

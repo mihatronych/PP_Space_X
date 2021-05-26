@@ -20,7 +20,17 @@ const Auth = observer(() => {
     const [password, setPassword] = useState('')
     const [nickname, setNickname] = useState('')
     const [countryId, setCountryId] = useState('')
-    const cookies = jwt_decode(localStorage.getItem('token'))
+
+    const storedToken = localStorage.getItem("token");
+    if (storedToken){
+        let decodedData = jwt_decode(storedToken, { header: true });
+        let expirationDate = decodedData.exp;
+        var current_time = Date.now() / 1000;
+        if(expirationDate < current_time)
+        {
+            localStorage.removeItem("token");
+        }
+    }
 
     useEffect(() => {
         fetchCountry().then(data => game.setCountries(data))
@@ -80,9 +90,8 @@ const Auth = observer(() => {
                                       value={countryId}
                                       onChange={e => setCountryId(e.target.value)}
                         >
-                            <option defaultChecked>----< /option>
+                            <option defaultChecked>----</option>
                             {game.countries.map(country =>
-
                                 <option value={country.id}>{country.name}</option>
                             )}
                         </Form.Control>
@@ -95,16 +104,6 @@ const Auth = observer(() => {
                         type="password"
                     />
 
-                    {/*{isLogin ? "" :*/}
-
-                    {/*    <Form.Control*/}
-                    {/*        className="mt-3"*/}
-                    {/*        placeholder="Repeat password"*/}
-                    {/*        value={password}*/}
-                    {/*        onChange={e => setPassword(e.target.value)}*/}
-                    {/*        type="password"*/}
-                    {/*    />*/}
-                    {/*}*/}
                     <Button onClick={click} className="mt-4 ">{isLogin ? 'Log in' : 'Sign up'}</Button>
                     {isLogin ?
                         <div className="d-flex justify-content-center mt-2 small-text">Don't have an account? <NavLink
@@ -116,6 +115,6 @@ const Auth = observer(() => {
                 </Form>
             </Card>
         </Container>
-    );
-});
+    )
+})
 export default Auth;
