@@ -32,12 +32,17 @@ export const delete_ = async (data_up) =>{
     console.log(token)
     const {data} = await $host.delete('api/gamer/'+data_up.id, {headers: {
             'Authorization': `Bearer ${token}`
-        }})//, params: {id: data_up.id}}) //$authHost
+        }})
+
+    //localStorage.removeItem('token')
     return data
 }
 
 export const check = async () => {
-    const {data} = await $authHost.get('api/gamer/auth' )
+    const token = localStorage.getItem('token')
+    const {data} = await $authHost.get('api/gamer/auth', {headers: {
+            'Authorization': `Bearer ${token}`
+        }} )
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }

@@ -11,17 +11,24 @@ const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        setTimeout(() => {
-            check().then(data => {
-                user.setUser(true)
-                user.setIsAuth(true)
-            }).finally(() => setLoading(false))
-        }, 500) //это имитация запроса потом setTimeout можно удалить
-    }, [])
-    if (loading) {
-        return <Spinner animation={"grow"}/>
-    }
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         try{
+    //             check().then(data => {
+    //                 user.setUser(data)
+    //                 user.setIsAuth(true)
+    //             }).finally(() => setLoading(false))
+    //         }
+    //         finally {
+    //             user.setUser({})
+    //             user.setIsAuth(false)
+    //         }
+
+    //    }) //это имитация запроса потом setTimeout можно удалить
+    //}, [])
+    //if (loading) {
+    //    return <Spinner animation={"grow"}/>
+    //}
     return (
         <BrowserRouter>
             {/*<NavBar />*/}

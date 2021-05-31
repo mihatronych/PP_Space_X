@@ -19,7 +19,7 @@ const Country = sequalize.define('country',{
     name: {type: DataTypes.STRING, unique:true, allowNull: false }
 })
 
-Gamer.hasMany(Session)
+Gamer.hasMany(Session, { onDelete: "cascade" })
 Session.belongsTo(Gamer)
 
 Country.hasMany(Gamer)

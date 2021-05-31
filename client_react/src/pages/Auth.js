@@ -9,6 +9,8 @@ import {observer} from "mobx-react-lite";
 import {fetchCountry, fetchGamer, fetchSession} from "../http/space_x_api";
 import jwt_decode from "jwt-decode";
 
+
+
 const Auth = observer(() => {
     const location = useLocation()
     const isLogin = location.pathname === LOGIN_ROUTE
@@ -23,12 +25,17 @@ const Auth = observer(() => {
 
     const storedToken = localStorage.getItem("token");
     if (storedToken){
-        let decodedData = jwt_decode(storedToken, { header: true });
-        let expirationDate = decodedData.exp;
-        let current_time = Date.now() / 1000;
-        if(expirationDate < current_time)
-        {
-            localStorage.removeItem("token");
+        if(storedToken.id !== undefined) {
+            let decodedData = jwt_decode(storedToken);
+            console.log(decodedData)
+            let expirationDate = decodedData.exp;
+            let current_time = Date.now() / 1000;
+            if (expirationDate < current_time) {
+                localStorage.removeItem("token");
+            }
+        }
+        else{
+            localStorage.removeItem("token")
         }
     }
 

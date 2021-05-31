@@ -77,6 +77,8 @@ const UserPage = observer(() => {
     const Delete = () => {
         delete_({id: jwt_decode(storedToken).id}).then()
         alert("Данные удалены");
+        user.setUser({})
+        user.setIsAuth(false)
         history.push(REGISTRATION_ROUTE)
     }
 
