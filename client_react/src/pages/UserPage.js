@@ -1,12 +1,12 @@
 import React, {Component, useContext, useEffect, useState} from "react";
 import {Alert, Button, Card, Col, Container, Form, Nav, Row, Table} from "react-bootstrap";
 import '../styles.css';
-import {Link} from "react-router-dom";
-import {MAIN_ROUTE} from "../utils/consts";
+import {Link, useHistory} from "react-router-dom";
+import {LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 import {Context} from "../index";
 import {fetchCountry, fetchGamer, fetchSession} from "../http/space_x_api";
 import {observer} from "mobx-react-lite";
-import {update} from "../http/user_api";
+import {delete_, update} from "../http/user_api";
 import jwt_decode from "jwt-decode";
 import {render} from "react-dom";
 import ReactPaginate from 'react-paginate';
@@ -19,7 +19,7 @@ import ReactPaginate from 'react-paginate';
 const UserPage = observer(() => {
     const {user, game} = useContext(Context)
     //const cookies = jwt_decode(localStorage.getItem('token'))
-
+    const history = useHistory()
     const storedToken = localStorage.getItem("token");
     if (storedToken){
         let decodedData = jwt_decode(storedToken, { header: true });
@@ -74,6 +74,11 @@ const UserPage = observer(() => {
         update({email: email, nickname: nickname, password: password, countryId: countryId}).then()
         alert("Данные обновлены");
     }
+    const Delete = () => {
+        delete_({id: jwt_decode(storedToken).id}).then()
+        alert("Данные удалены");
+        history.push(REGISTRATION_ROUTE)
+    }
 
     let counter = 0
 
@@ -121,6 +126,7 @@ const UserPage = observer(() => {
                             })}
                         </Form.Control>
                         <Button className="mt-4" onClick={Update}>Update</Button>
+                        <Button className="mt-4" onClick={Delete}>Delete</Button>
                     </Form>
 
                 </Col>
