@@ -21,10 +21,8 @@ const Auth = observer(() => {
     const [nickname, setNickname] = useState('')
     const [countryId, setCountryId] = useState('')
 
+
     const storedToken = localStorage.getItem("token");
-    console.log(user)
-    console.log(game)
-    console.log(storedToken)
     if (storedToken){
         let decodedData = jwt_decode(storedToken, { header: true });
         let expirationDate = decodedData.exp;
@@ -39,18 +37,22 @@ const Auth = observer(() => {
         fetchCountry().then(data => game.setCountries(data))
     }, [])
 
+    function validateEmail(email) {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+
     const click = async () => {
         try {
+
             let data;
             if (isLogin) {
                 data = await login(email, password);
-                console.log(data)
 
             } else {
-                console.log(email, nickname, countryId, password)
                 data = await registration(email, nickname, countryId, password);
             }
-            console.log(data)
             if(data) {
                 user.setIsAuth(true)
                 user.setUser(data)
@@ -58,8 +60,7 @@ const Auth = observer(() => {
                 history.push(MAIN_ROUTE)
             }
         } catch (e) {
-            history.push(LOGIN_ROUTE)
-            return alert(e.response.data.message)
+            alert(e.response.data.message)
         }
 
     }
@@ -71,6 +72,7 @@ const Auth = observer(() => {
             <Card className="p-1 auth_card">
                 <h2 className="m-auto ">{isLogin ? 'Log in' : 'Sign up'}</h2>
                 <Form className="d-flex flex-column">
+
                     <Form.Control
                         className="mt-3 input_style"
                         placeholder="Email"
