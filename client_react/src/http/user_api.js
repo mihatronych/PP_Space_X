@@ -5,12 +5,14 @@ import {set} from "mobx";
 
 export const registration = async (email, nickname, countryId, password) => {
     const {data} = await $host.post('api/gamer/registration', {email,  nickname, countryId, password})
+    localStorage.removeItem('token')
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }
 
 export const login = async (email, password) => {
     const {data} = await $host.post('api/gamer/login', {email, password})
+    localStorage.removeItem('token')
     localStorage.setItem('token', data.token)
     console.log(localStorage.getItem('token'))
     return jwt_decode(data.token)
@@ -38,6 +40,7 @@ export const delete_ = async (data_up) =>{
 
 export const check = async () => {
     const {data} = await $authHost.get('api/gamer/auth' )
+    localStorage.removeItem("token")
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }

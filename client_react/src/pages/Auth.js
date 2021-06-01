@@ -22,6 +22,9 @@ const Auth = observer(() => {
     const [countryId, setCountryId] = useState('')
 
     const storedToken = localStorage.getItem("token");
+    console.log(user)
+    console.log(game)
+    console.log(storedToken)
     if (storedToken){
         let decodedData = jwt_decode(storedToken, { header: true });
         let expirationDate = decodedData.exp;
@@ -51,6 +54,7 @@ const Auth = observer(() => {
             if(data) {
                 user.setIsAuth(true)
                 user.setUser(data)
+                console.log(localStorage.getItem("token"))
                 history.push(MAIN_ROUTE)
             }
         } catch (e) {
