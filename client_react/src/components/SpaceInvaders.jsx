@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useContext} from "react";
 
 import Store from "../Store";
 import Actions from "../Actions";
@@ -11,6 +11,8 @@ import {MAIN_ROUTE} from "../utils/consts";
 import {Nav} from "react-bootstrap";
 import jwt_decode from "jwt-decode";
 import {createSession} from "../http/space_x_api";
+import {Context} from "../index";
+import UserStore from "../store/UserStore";
 
 const storedToken = localStorage.getItem("token");
 if (storedToken){
@@ -24,6 +26,7 @@ if (storedToken){
 }
 
 //let cookies = jwt_decode(localStorage.getItem('token'))
+
 
 class SpaceInvaders extends Component {
     timer;
@@ -161,7 +164,8 @@ class SpaceInvaders extends Component {
                     "You shot all the invaders and saved the planet \(^w^)/. Score: " + this.props.initialEnemies;
             }
             let time = document.getElementById('time').value;
-            createSession({gamerId: parseInt(jwt_decode(storedToken).id), score: score, time_session: time  }).then()
+            console.log(jwt_decode(localStorage.getItem("token")).id)
+            createSession({gamerId: parseInt(jwt_decode(localStorage.getItem("token")).id), score: score, time_session: time  }).then()
             return (
                 <div className="text-center">
                     <h1>{endGameText}</h1>
