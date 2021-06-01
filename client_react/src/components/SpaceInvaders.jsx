@@ -164,8 +164,8 @@ class SpaceInvaders extends Component {
                     "You shot all the invaders and saved the planet \(^w^)/. Score: " + this.props.initialEnemies;
             }
             let time = document.getElementById('time').value;
-            console.log(jwt_decode(storedToken).id)
-            createSession({gamerId: parseInt(jwt_decode(storedToken).id), score: score, time_session: time  }).then()
+            console.log(jwt_decode(localStorage.getItem("token")).id)
+            createSession({gamerId: parseInt(jwt_decode(localStorage.getItem("token")).id), score: score, time_session: time  }).then()
             return (
                 <div className="text-center">
                     <h1>{endGameText}</h1>
