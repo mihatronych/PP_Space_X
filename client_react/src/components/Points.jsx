@@ -9,8 +9,8 @@ class Point extends Component {
         <image xlinkHref={img}
                x={this.props.x}
                y={this.props.y}
-               width={50}
-               height={50}
+               width={55}
+               height={55}
         />
         );
     }

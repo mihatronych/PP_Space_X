@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import img from '../img/spacex.png';
+import img from '../img/bitcoin.png';
 import {ENEMY_RADIUS} from "../Constants";
 
 

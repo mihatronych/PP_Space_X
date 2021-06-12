@@ -21,12 +21,11 @@ const UserPage = observer(() => {
     //const cookies = jwt_decode(localStorage.getItem('token'))
     const history = useHistory()
     const storedToken = localStorage.getItem("token");
-    if (storedToken){
-        let decodedData = jwt_decode(storedToken, { header: true });
+    if (storedToken) {
+        let decodedData = jwt_decode(storedToken, {header: true});
         let expirationDate = decodedData.exp;
         let current_time = Date.now() / 1000;
-        if(expirationDate < current_time)
-        {
+        if (expirationDate < current_time) {
             localStorage.removeItem("token");
         }
     }
@@ -37,7 +36,9 @@ const UserPage = observer(() => {
     const pagesVisited = pageNumber * sessionsPerPage
 
     const displaySessions = game.sessions
-        .filter((data) => {if (data.gamerId === parseInt(jwt_decode(storedToken).id)) return data})
+        .filter((data) => {
+            if (data.gamerId === parseInt(jwt_decode(storedToken).id)) return data
+        })
         .slice(pagesVisited, pagesVisited + sessionsPerPage)
         .map((data) => {
             return (
@@ -49,9 +50,13 @@ const UserPage = observer(() => {
             );
         });
 
-    const pageCount = Math.ceil( game.sessions.length / sessionsPerPage);
+    const pageCount = Math.ceil(game.sessions
+        .filter((data) => {
+            if (data.gamerId === parseInt(jwt_decode(storedToken).id)) return data
+        }).length / sessionsPerPage
+    );
 
-    const changePage = ({ selected }) => {
+    const changePage = ({selected}) => {
         setPageNumber(selected);
     };
 
