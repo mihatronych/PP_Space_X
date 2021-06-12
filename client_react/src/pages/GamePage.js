@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import {Button, Container} from "react-bootstrap";
 import SpaceInvaders from "../components/SpaceInvaders";
 import {useCookies} from "react-cookie";
@@ -6,9 +6,10 @@ import {createSession, fetchGamer, fetchSession} from "../http/space_x_api";
 import Store from "../Store";
 import {observer} from "mobx-react-lite";
 import jwt_decode from "jwt-decode";
+import {Context} from "../index";
 
 
-const MainPage = observer(() => {
+const GamePage = observer(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken){
         let decodedData = jwt_decode(storedToken, { header: true });
@@ -20,7 +21,6 @@ const MainPage = observer(() => {
         }
     }
 
-    //const cookies = jwt_decode(localStorage.getItem('token'))
     this.state = Store.getGameState();
 
     return (
@@ -41,4 +41,4 @@ const MainPage = observer(() => {
     );
 });
 
-export default MainPage;
+export default GamePage;

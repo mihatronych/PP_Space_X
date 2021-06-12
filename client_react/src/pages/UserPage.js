@@ -1,27 +1,25 @@
 import React, {Component, useContext, useEffect, useState} from "react";
 import {Alert, Button, Card, Col, Container, Form, Nav, Row, Table} from "react-bootstrap";
 import '../styles.css';
-import {Link} from "react-router-dom";
-import {MAIN_ROUTE} from "../utils/consts";
+import {Link, useHistory} from "react-router-dom";
+import {LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 import {Context} from "../index";
 import {fetchCountry, fetchGamer, fetchSession} from "../http/space_x_api";
 import {observer} from "mobx-react-lite";
-import {update} from "../http/user_api";
+import {delete_, update} from "../http/user_api";
 import jwt_decode from "jwt-decode";
 import {render} from "react-dom";
-
+import ReactPaginate from 'react-paginate';
 
 
 //to do:
-//сделать выподающий список
-//какое-то действие при нажатии на обновить
-//скролл таблицы ВЕЗДЕ
-//сохраниене результатов автоматически
+//скролл таблицы ВЕЗДЕ / Пагинация
 //
+
 const UserPage = observer(() => {
     const {user, game} = useContext(Context)
     //const cookies = jwt_decode(localStorage.getItem('token'))
-
+    const history = useHistory()
     const storedToken = localStorage.getItem("token");
     if (storedToken){
         let decodedData = jwt_decode(storedToken, { header: true });
@@ -32,6 +30,30 @@ const UserPage = observer(() => {
             localStorage.removeItem("token");
         }
     }
+
+    const [pageNumber, setPageNumber] = useState(0)
+
+    const sessionsPerPage = 5
+    const pagesVisited = pageNumber * sessionsPerPage
+
+    const displaySessions = game.sessions
+        .filter((data) => {if (data.gamerId === parseInt(jwt_decode(storedToken).id)) return data})
+        .slice(pagesVisited, pagesVisited + sessionsPerPage)
+        .map((data) => {
+            return (
+                <tr>
+                    <td>{data.id}</td>
+                    <td>{data.score}</td>
+                    <td>{data.time_session}</td>
+                </tr>
+            );
+        });
+
+    const pageCount = Math.ceil( game.sessions.length / sessionsPerPage);
+
+    const changePage = ({ selected }) => {
+        setPageNumber(selected);
+    };
 
     useEffect(() => {
         fetchSession().then(data => game.setSessions(data))
@@ -52,7 +74,16 @@ const UserPage = observer(() => {
         update({email: email, nickname: nickname, password: password, countryId: countryId}).then()
         alert("Данные обновлены");
     }
+    const Delete = () => {
+        delete_({id: jwt_decode(storedToken).id}).then()
+        user.setUser({})
+        user.setIsAuth(false)
+        localStorage.removeItem("token");
+        alert("Данные удалены");
+        history.push(REGISTRATION_ROUTE)
+    }
 
+    let counter = 0
 
     return (
         <Container className="">
@@ -98,6 +129,7 @@ const UserPage = observer(() => {
                             })}
                         </Form.Control>
                         <Button className="mt-4" onClick={Update}>Update</Button>
+                        <Button className="mt-4" onClick={Delete}>Delete</Button>
                     </Form>
 
                 </Col>
@@ -112,21 +144,33 @@ const UserPage = observer(() => {
                         </tr>
                         </thead>
                         <tbody>
-
-                        {game.sessions.map(data => {
-                                if (data.gamerId === parseInt(jwt_decode(storedToken).id))
-                                    return (
-                                        <tr>
-                                            <td>{data.gamerId}</td>
-                                            <td>{data.score}</td>
-                                            <td>{data.time_session}</td>
-                                        </tr>
-                                    )
-                            }
-                        )}
+                        {displaySessions}
+                        {/*{game.sessions.map(data => {*/}
+                        {/*    counter += 1*/}
+                        {/*        if (data.gamerId === parseInt(jwt_decode(storedToken).id))*/}
+                        {/*            return (*/}
+                        {/*                <tr>*/}
+                        {/*                    <td>{data.id}</td>*/}
+                        {/*                    <td>{data.score}</td>*/}
+                        {/*                    <td>{data.time_session}</td>*/}
+                        {/*                </tr>*/}
+                        {/*            )*/}
+                        {/*    }*/}
+                        {/*)}*/}
                         </tbody>
-                    </Table></Col>
-
+                    </Table>
+                    <ReactPaginate
+                        previousLabel={"Previous"}
+                        nextLabel={"Next"}
+                        pageCount={pageCount}
+                        onPageChange={changePage}
+                        containerClassName={"paginationBttns"}
+                        previousLinkClassName={"previousBttn"}
+                        nextLinkClassName={"nextBttn"}
+                        disabledClassName={"paginationDisabled"}
+                        activeClassName={"paginationActive"}
+                    />
+                </Col>
             </Row>
         </Container>
     );
