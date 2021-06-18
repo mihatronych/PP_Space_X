@@ -23,6 +23,7 @@ const Auth = observer(() => {
 
 
     const storedToken = localStorage.getItem("token");
+    console.log(storedToken)
     if (storedToken){
         let decodedData = jwt_decode(storedToken, { header: true });
         let expirationDate = decodedData.exp;
